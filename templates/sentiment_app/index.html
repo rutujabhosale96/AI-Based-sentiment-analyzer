@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SentimentAI — Emotion Intelligence Platform</title>
+  {% load static %}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'sentiment_app/css/main.css' %}" />
+</head>
+<body>
+  <!-- Background grid -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--green"></div>
+  <div class="bg-glow bg-glow--blue"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__logo">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">SentimentAI</span>
+    </div>
+    <nav class="header__nav">
+      <button class="nav-btn active" data-tab="analyze">Analyze</button>
+      <button class="nav-btn" data-tab="bulk">Bulk</button>
+      <button class="nav-btn" data-tab="dashboard">Dashboard</button>
+      <button class="nav-btn" data-tab="history">History</button>
+    </nav>
+    <div class="header__status">
+      <span class="status-dot" id="statusDot"></span>
+      <span class="status-label" id="statusLabel">Connecting...</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ── ANALYZE TAB ── -->
+    <section class="tab-panel active" id="tab-analyze">
+      <div class="panel-header">
+        <h1 class="panel-title">Emotion<br /><em>Intelligence</em></h1>
+        <p class="panel-subtitle">Paste any social media post, product review, or text — our AI decodes the emotional signal.</p>
+      </div>
+
+      <div class="analyze-grid">
+        <div class="input-card">
+          <div class="input-card__header">
+            <span class="card-label">INPUT TEXT</span>
+            <div class="source-pills">
+              <button class="pill active" data-source="social_media">Social Media</button>
+              <button class="pill" data-source="product_review">Review</button>
+              <button class="pill" data-source="manual">Custom</button>
+            </div>
+          </div>
+          <textarea id="analyzeText" class="text-input" placeholder="Type or paste your text here...&#10;&#10;Try: 'Just received my order — absolutely love the packaging and quality! Will definitely buy again 🎉'" maxlength="5000"></textarea>
+          <div class="input-card__footer">
+            <span class="char-count" id="charCount">0 / 5000</span>
+            <button class="btn-analyze" id="analyzeBtn">
+              <span class="btn-text">Analyze Sentiment</span>
+              <span class="btn-icon">→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="result-card" id="resultCard">
+          <div class="result-placeholder" id="resultPlaceholder">
+            <div class="placeholder-icon">◎</div>
+            <p>Your sentiment analysis will appear here</p>
+          </div>
+          <div class="result-content hidden" id="resultContent">
+            <div class="result-label-row">
+              <div class="result-badge" id="resultBadge"></div>
+              <div class="result-confidence">
+                <span class="conf-label">Confidence</span>
+                <span class="conf-value" id="confValue"></span>
+              </div>
+            </div>
+            <div class="result-text-preview" id="resultPreview"></div>
+            <div class="score-bars" id="scoreBars"></div>
+            <div class="result-meta" id="resultMeta"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BULK TAB ── -->
+    <section class="tab-panel" id="tab-bulk">
+      <div class="panel-header">
+        <h1 class="panel-title">Batch<br /><em>Processing</em></h1>
+        <p class="panel-subtitle">Analyze up to 50 texts at once. Each line is treated as a separate entry.</p>
+      </div>
+      <div class="bulk-grid">
+        <div class="input-card">
+          <div class="input-card__header">
+            <span class="card-label">BULK INPUT — ONE TEXT PER LINE</span>
+            <div class="source-pills">
+              <button class="pill active" data-bulk-source="bulk">Bulk</button>
+              <button class="pill" data-bulk-source="social_media">Social</button>
+              <button class="pill" data-bulk-source="product_review">Reviews</button>
+            </div>
+          </div>
+          <textarea id="bulkText" class="text-input text-input--tall" placeholder="Great product, loved it!&#10;Terrible experience, never again.&#10;It was okay, nothing special.&#10;Exceeded all my expectations!&#10;..."></textarea>
+          <div class="input-card__footer">
+            <span class="line-count" id="lineCount">0 lines</span>
+            <button class="btn-analyze" id="bulkBtn">
+              <span class="btn-text">Analyze All</span>
+              <span class="btn-icon">→</span>
+            </button>
+          </div>
+        </div>
+        <div class="bulk-results" id="bulkResults">
+          <div class="result-placeholder">
+            <div class="placeholder-icon">⊞</div>
+            <p>Bulk results appear here</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DASHBOARD TAB ── -->
+    <section class="tab-panel" id="tab-dashboard">
+      <div class="panel-header">
+        <h1 class="panel-title">Analytics<br /><em>Dashboard</em></h1>
+        <p class="panel-subtitle">Aggregate sentiment intelligence across all analyzed entries.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-card--total">
+          <div class="stat-value" id="statTotal">—</div>
+          <div class="stat-label">Total Analyzed</div>
+        </div>
+        <div class="stat-card stat-card--pos">
+          <div class="stat-value" id="statPos">—</div>
+          <div class="stat-label">Positive</div>
+        </div>
+        <div class="stat-card stat-card--neg">
+          <div class="stat-value" id="statNeg">—</div>
+          <div class="stat-label">Negative</div>
+        </div>
+        <div class="stat-card stat-card--neu">
+          <div class="stat-value" id="statNeu">—</div>
+          <div class="stat-label">Neutral</div>
+        </div>
+        <div class="stat-card stat-card--conf">
+          <div class="stat-value" id="statConf">—</div>
+          <div class="stat-label">Avg Confidence</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="chart-card__title">Sentiment Distribution</div>
+          <div class="donut-wrap" id="donutWrap">
+            <svg class="donut-svg" viewBox="0 0 200 200" id="donutSvg"></svg>
+            <div class="donut-center" id="donutCenter">—</div>
+          </div>
+          <div class="donut-legend" id="donutLegend"></div>
+        </div>
+        <div class="chart-card chart-card--bar">
+          <div class="chart-card__title">Score Breakdown</div>
+          <div class="bar-chart" id="barChart"></div>
+        </div>
+      </div>
+
+      <div class="dash-actions">
+        <button class="btn-refresh" id="refreshStats">↻ Refresh</button>
+        <button class="btn-danger" id="resetBtn">⌫ Clear All Data</button>
+      </div>
+    </section>
+
+    <!-- ── HISTORY TAB ── -->
+    <section class="tab-panel" id="tab-history">
+      <div class="panel-header">
+        <h1 class="panel-title">Analysis<br /><em>History</em></h1>
+        <p class="panel-subtitle">All analyzed entries stored in MongoDB, most recent first.</p>
+      </div>
+      <div class="history-controls">
+        <input class="history-search" id="historySearch" placeholder="Filter by text or label..." />
+        <select class="history-filter" id="historyFilter">
+          <option value="">All Sentiments</option>
+          <option value="positive">Positive</option>
+          <option value="negative">Negative</option>
+          <option value="neutral">Neutral</option>
+        </select>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="result-placeholder">
+          <div class="placeholder-icon">◷</div>
+          <p>Loading history...</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="loader">
+      <div class="loader__ring"></div>
+      <p class="loader__text">Analyzing sentiment...</p>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="{% static 'sentiment_app/js/app.js' %}"></script>
+</body>
+</html>
