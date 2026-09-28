@@ -39,6 +39,21 @@ It also supports bulk text analysis, sentiment analytics, and analysis history t
   - Maximum 5,000 characters for individual analysis
   - Maximum 50 entries for bulk analysis
 ---
+
+## 📸 Screenshots
+
+### 🏠 Home
+![Home](screenshots/home.png)
+
+### 📊 Dashboard
+![Dashboard](screenshots/Dashboard.png)
+
+### 📦 Batch Analysis
+![Batch Analysis](screenshots/batchanalysis.png)
+
+### 📝 Analysis History
+![History](screenshots/history.png)
+
 🛠️ Tech Stack
 
 Technology| Purpose
